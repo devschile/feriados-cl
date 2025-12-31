@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feriados Chile — API</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#60a5fa;--muted:#94a3b8;--text:#e6eef8}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,#071029 0%, #07172b 100%);color:var(--text)}
+    .wrap{max-width:900px;margin:48px auto;padding:24px}
+    header{display:flex;justify-content:space-between;align-items:center}
+    h1{margin:0;font-size:1.4rem}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.6)}
+    .controls{display:flex;gap:8px;align-items:center}
+    input[type=number]{width:120px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;color:var(--text)}
+    button{background:var(--accent);color:#022;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button:disabled{opacity:.5}
+    .out{margin-top:18px}
+    .month{margin-top:12px}
+    .month h3{margin:0 0 6px;font-size:1rem}
+    ul{margin:0;padding-left:18px}
+    li{margin:6px 0}
+    .meta{color:var(--muted);font-size:.9rem}
+    footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+    a{color:var(--accent)}
+    pre{background:#021021;padding:12px;border-radius:8px;overflow:auto}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Feriados Chile — API</h1>
+        <p class="lead">Consulta feriados oficiales años 2026, 2027.</p>
+      </div>
+      <div class="meta">Hosted on Netlify</div>
+    </header>
+
+    <div class="card" id="app">
+      <div style="margin-bottom:24px;color:var(--muted)">
+        API endpoints: <a href="/api/holidays/2026">/api/holidays/2026</a> • <a href="/holidays/2026">/holidays/2026</a>
+      </div>
+      <div class="controls">
+        <label for="year">Año</label>
+        <input id="year" type="number" min="2026" max="2027" value="2026" />
+        <button id="fetch">Consultar</button>
+        <div style="margin-left:auto;color:var(--muted)">Formato: <code>/holidays/:year</code></div>
+      </div>
+
+      <div class="out" id="out"></div>
+    </div>
+
+    <footer>
+      <div style="text-align:center">&copy; 2025 DevsChile. Licencia: <a href="/LICENSE">MIT</a></div>
+    </footer>
+  </div>
+
+  <script>
+    const out = document.getElementById('out');
+    const yearInput = document.getElementById('year');
+    const btn = document.getElementById('fetch');
+    const allowed = [2026,2027];
+
+    function showError(msg){ out.innerHTML = `<div style="color:#ffccd5">Error: ${msg}</div>` }
+
+    function render(data){
+      if(!data || !data.feriados) return showError('Respuesta inválida');
+      let html = `<div class="meta">Año: ${data.year}</div>`;
+      for(const m of Object.keys(data.feriados)){
+        html += `<div class="month"><h3>${m}</h3><ul>`;
+        for(const f of data.feriados[m]){
+          html += `<li><strong>${f.dia}</strong> — ${f.descripcion} <span class="meta">(${f.dia_semana}) ${f.tipo}${f.irrenunciable?', irrenunciable':''}</span></li>`;
+        }
+        html += `</ul></div>`;
+      }
+      out.innerHTML = html;
+    }
+
+    async function fetchYear(y){
+      out.innerHTML = '<div class="meta">Cargando…</div>';
+      // try clean route first
+      const cleanUrl = `/holidays/${y}`;
+      try{
+        const r = await fetch(cleanUrl);
+        const j = await r.json();
+        if(r.ok) return render(j);
+        // if the response is an error object, show it
+        if(j && j.error) return showError(j.error);
+      }catch(e){ /* fallthrough */ }
+
+      // fallback to function direct
+      try{
+        const r2 = await fetch(`/.netlify/functions/holidays?year=${y}`);
+        const j2 = await r2.json();
+        if(r2.ok) return render(j2);
+        if(j2 && j2.error) return showError(j2.error);
+      }catch(e){ showError('No se pudo conectar al servidor'); }
+    }
+
+    btn.addEventListener('click', ()=>{
+      const y = parseInt(yearInput.value,10);
+      if(!allowed.includes(y)) return showError('Solo se soportan 2026 y 2027');
+      fetchYear(y);
+    });
+
+    // auto load default
+    fetchYear(parseInt(yearInput.value,10));
+  </script>
+</body>
+</html>
