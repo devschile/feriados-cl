@@ -1,0 +1,15 @@
+{
+  "name": "feriados-api",
+  "version": "0.1.0",
+  "description": "API REST (Netlify Functions) que retorna feriados de Chile por año",
+  "main": "functions/holidays.js",
+  "scripts": {
+    "start": "netlify dev",
+    "build": "echo \"No build step\""
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-cli": "^12.0.0"
+  }
+}

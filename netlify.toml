@@ -1,0 +1,17 @@
+[build]
+  functions = "functions"
+
+[dev]
+  functions = "functions"
+
+[[redirects]]
+  from = "/holidays/:year"
+  to = "/.netlify/functions/holidays?year=:year"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/holidays/:year"
+  to = "/.netlify/functions/holidays?year=:year"
+  status = 200
+  force = true

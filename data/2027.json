@@ -1,0 +1,161 @@
+{
+  "year": 2027,
+  "feriados": {
+    "enero": [
+      {
+        "mes": 1,
+        "dia": 1,
+        "dia_semana": "viernes",
+        "descripcion": "Año Nuevo",
+        "tipo": "civil",
+        "irrenunciable": true
+      }
+    ],
+    "marzo": [
+      {
+        "mes": 3,
+        "dia": 26,
+        "dia_semana": "viernes",
+        "descripcion": "Viernes Santo",
+        "tipo": "religioso",
+        "irrenunciable": false
+      },
+      {
+        "mes": 3,
+        "dia": 27,
+        "dia_semana": "sábado",
+        "descripcion": "Sábado Santo",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "mayo": [
+      {
+        "mes": 5,
+        "dia": 1,
+        "dia_semana": "sábado",
+        "descripcion": "Día del Trabajo",
+        "tipo": "civil",
+        "irrenunciable": true
+      },
+      {
+        "mes": 5,
+        "dia": 21,
+        "dia_semana": "viernes",
+        "descripcion": "Día de las Glorias Navales",
+        "tipo": "civil",
+        "irrenunciable": false
+      }
+    ],
+    "junio": [
+      {
+        "mes": 6,
+        "dia": 21,
+        "dia_semana": "lunes",
+        "descripcion": "Día Nacional de los Pueblos Indígenas",
+        "tipo": "civil",
+        "irrenunciable": false
+      },
+      {
+        "mes": 6,
+        "dia": 29,
+        "dia_semana": "martes",
+        "descripcion": "San Pedro y San Pablo",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "julio": [
+      {
+        "mes": 7,
+        "dia": 16,
+        "dia_semana": "viernes",
+        "descripcion": "Día de la Virgen del Carmen",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "agosto": [
+      {
+        "mes": 8,
+        "dia": 15,
+        "dia_semana": "domingo",
+        "descripcion": "Asunción de la Virgen",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "septiembre": [
+      {
+        "mes": 9,
+        "dia": 17,
+        "dia_semana": "viernes",
+        "descripcion": "Feriado Adicional Fiestas Patrias",
+        "tipo": "civil",
+        "irrenunciable": false
+      },
+      {
+        "mes": 9,
+        "dia": 18,
+        "dia_semana": "sábado",
+        "descripcion": "Independencia Nacional",
+        "tipo": "civil",
+        "irrenunciable": true
+      },
+      {
+        "mes": 9,
+        "dia": 19,
+        "dia_semana": "domingo",
+        "descripcion": "Día de las Glorias del Ejército",
+        "tipo": "civil",
+        "irrenunciable": true
+      }
+    ],
+    "octubre": [
+      {
+        "mes": 10,
+        "dia": 11,
+        "dia_semana": "lunes",
+        "descripcion": "Encuentro de Dos Mundos",
+        "tipo": "civil",
+        "irrenunciable": false
+      },
+      {
+        "mes": 10,
+        "dia": 31,
+        "dia_semana": "domingo",
+        "descripcion": "Día de las Iglesias Evangélicas y Protestantes",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "noviembre": [
+      {
+        "mes": 11,
+        "dia": 1,
+        "dia_semana": "lunes",
+        "descripcion": "Día de Todos los Santos",
+        "tipo": "religioso",
+        "irrenunciable": false
+      }
+    ],
+    "diciembre": [
+      {
+        "mes": 12,
+        "dia": 8,
+        "dia_semana": "miércoles",
+        "descripcion": "Inmaculada Concepción",
+        "tipo": "religioso",
+        "irrenunciable": false
+      },
+      {
+        "mes": 12,
+        "dia": 25,
+        "dia_semana": "sábado",
+        "descripcion": "Navidad",
+        "tipo": "religioso",
+        "irrenunciable": true
+      }
+    ]
+  }
+}
