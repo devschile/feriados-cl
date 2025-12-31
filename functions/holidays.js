@@ -109,7 +109,15 @@ function buildHolidays(year) {
 exports.handler = async function (event) {
   try {
     const params = event.queryStringParameters || {};
-    const yearParam = params.year || params.anio || params.año || params.ano;
+    let yearParam = params.year || params.anio || params.año || params.ano;
+
+    // If no query param, try to extract year from the request path (e.g. /holidays/2026)
+    if (!yearParam) {
+      const p = (event.path || event.rawPath || '');
+      const m = p.match(/\/(\d{4})(?:\/|$)/);
+      if (m) yearParam = m[1];
+    }
+
     const year = yearParam ? parseInt(yearParam, 10) : new Date().getUTCFullYear();
     if (!Number.isInteger(year) || year < 1900 || year > 2100) {
       return {
