@@ -46,6 +46,8 @@
     a{color:var(--accent)}
     pre{background:#021021;padding:12px;border-radius:8px;overflow:auto}
   </style>
+  <!-- Analytics -->
+  <script src="assets/js/analytics.js" defer></script>
 </head>
 <body>
   <div class="wrap">
@@ -121,6 +123,7 @@
     btn.addEventListener('click', ()=>{
       const y = parseInt(yearInput.value,10);
       if(!allowed.includes(y)) return showError('Solo se soportan 2026 y 2027');
+      if(window.dcCapture) window.dcCapture('holidays_queried', { year: y });
       fetchYear(y);
     });
 
