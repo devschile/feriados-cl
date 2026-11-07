@@ -8,7 +8,7 @@ API REST que devuelve los feriados de Chile para un año dado. Es un servidor No
 
 - `https://feriados.devschile.cl/holidays/2026` — ruta limpia (reescrita internamente a la función).
 - `https://feriados.devschile.cl/api/holidays/2026` — alternativa común para APIs.
-- `https://feriados.devschile.cl/.netlify/functions/holidays?year=2026` — ruta heredada de Netlify, se mantiene por compatibilidad.
+- `https://feriados.devschile.cl/.netlify/functions/holidays?year=2026` — ruta heredada de cuando el sitio estaba en Netlify, se mantiene por compatibilidad.
 
 Solo se aceptan los métodos `GET`, `HEAD` y `OPTIONS`. CORS abierto (`*`). `GET /healthz` responde `ok` para el healthcheck.
 
@@ -94,8 +94,6 @@ El sitio corre en el Coolify de devsChile (`coolify.devschile.cl`) como aplicaci
 - No requiere variables de entorno ni secretos. Solo `PORT` (opcional, por defecto `3000`).
 - El dominio `feriados.devschile.cl` está en Cloudflare y apunta al servidor de Coolify.
 - El servidor solo sirve una lista blanca de archivos (landing, `robots.txt`, `sitemap.xml`, `assets/js/` y `data/`). El resto del repositorio no es accesible por HTTP.
-
-`netlify.toml` se conserva solo como respaldo mientras exista el sitio anterior en Netlify. No lo usa Coolify.
 
 ## Licencia
 
