@@ -67,130 +67,401 @@
   }
   </script>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#60a5fa;--muted:#94a3b8;--text:#e6eef8}
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:linear-gradient(180deg,#071029 0%, #07172b 100%);color:var(--text)}
-    .wrap{max-width:900px;margin:48px auto;padding:24px}
-    header{display:flex;justify-content:space-between;align-items:center}
-    h1{margin:0;font-size:1.4rem}
-    p.lead{color:var(--muted);margin:6px 0 18px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.6)}
-    .controls{display:flex;gap:8px;align-items:center}
-    input[type=number]{width:120px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;color:var(--text)}
-    button{background:var(--accent);color:#022;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
-    button:disabled{opacity:.5}
-    .out{margin-top:18px}
-    .month{margin-top:12px}
-    .month h3{margin:0 0 6px;font-size:1rem}
-    ul{margin:0;padding-left:28px}
-    li{margin:6px 0}
-    .meta{color:var(--muted);font-size:.9rem}
-    footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+    :root{
+      color-scheme:dark;
+      --bg:#0a1020;--surface:#111a2e;--surface-2:#16213a;--border:rgba(148,163,184,.16);
+      --text:#e8eef9;--muted:#9aa8bf;--accent:#6ea8ff;--accent-ink:#06142e;
+      --red:#ff6b6b;--green:#5eead4;--amber:#fbbf24;--radius:14px
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      background:radial-gradient(1200px 600px at 50% -200px,#16284d 0%,var(--bg) 60%);color:var(--text);line-height:1.55;min-height:100vh}
+    .flag{height:4px;background:linear-gradient(90deg,#0039a6 0 33%,#fff 33% 66%,#d52b1e 66% 100%)}
+    .wrap{max-width:980px;margin:0 auto;padding:0 20px}
     a{color:var(--accent)}
-    pre{background:#021021;padding:12px;border-radius:8px;overflow:auto}
-    .doc{margin-top:24px}
-    .doc h2{font-size:1.1rem;margin:0 0 8px}
-    .doc p,.doc li{color:var(--muted);line-height:1.55}
-    .doc code{color:var(--text)}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+    .hero{padding:56px 0 32px}
+    .eyebrow{display:inline-block;margin:0 0 14px;padding:4px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:.85rem;background:rgba(255,255,255,.03)}
+    h1{margin:0 0 12px;font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.1;letter-spacing:-.02em}
+    .lead{margin:0 0 24px;max-width:62ch;color:var(--muted);font-size:1.08rem}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-block;padding:10px 18px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;text-decoration:none;border:1px solid transparent}
+    .btn:hover{filter:brightness(1.08)}
+    .btn.ghost{background:transparent;color:var(--text);border-color:var(--border)}
+    .btn.ghost:hover{background:rgba(255,255,255,.05)}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:24px;box-shadow:0 10px 30px rgba(2,6,23,.35)}
+    h2{margin:0;font-size:1.3rem;letter-spacing:-.01em}
+    h3{margin:0}
+    .section-lead{margin:6px 0 18px;color:var(--muted)}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .picker{display:flex;align-items:center;gap:10px}
+    .picker label{color:var(--muted);font-size:.95rem}
+    select{appearance:none;-webkit-appearance:none;min-width:130px;padding:10px 38px 10px 14px;border-radius:10px;border:1px solid var(--border);color:var(--text);font:inherit;font-weight:600;cursor:pointer;
+      background:var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%239aa8bf' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center}
+    select:hover{border-color:rgba(110,168,255,.5)}
+    .summary{margin:4px 0 18px;color:var(--muted);min-height:1.5em}
+    .summary strong{color:var(--text)}
+
+    .months{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+    .month{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+    .month h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:10px}
+    .month ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+    .holiday{display:flex;gap:12px;align-items:flex-start}
+    .holiday.past{opacity:.5}
+    .day{flex:none;width:48px;padding:5px 0;text-align:center;border-radius:10px;background:rgba(110,168,255,.1);border:1px solid rgba(110,168,255,.22)}
+    .day strong{display:block;font-size:1.15rem;line-height:1.1}
+    .day span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .holiday.weekend .day{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.28)}
+    .name{font-weight:600;line-height:1.3}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+    .tag{font-size:.72rem;padding:1px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted)}
+    .tag.irr{color:var(--red);border-color:rgba(255,107,107,.4);background:rgba(255,107,107,.08)}
+    .tag.next{color:var(--green);border-color:rgba(94,234,212,.4);background:rgba(94,234,212,.08)}
+    .tag.we{color:var(--amber);border-color:rgba(251,191,36,.35)}
+    .status{padding:28px 0;text-align:center;color:var(--muted)}
+    .status.error{color:#ffb4bd}
+    .status button{margin-left:8px}
+    .skeleton{height:150px;border-radius:12px;background:linear-gradient(90deg,var(--surface-2),#1c2a4a,var(--surface-2));background-size:200% 100%;animation:sh 1.3s infinite linear}
+    @keyframes sh{to{background-position:-200% 0}}
+    @media (prefers-reduced-motion:reduce){.skeleton{animation:none}html{scroll-behavior:auto}}
+
+    .endpoint{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 14px;border-radius:10px;background:#07101f;border:1px solid var(--border);margin-bottom:16px;overflow-x:auto}
+    .method{flex:none;padding:2px 8px;border-radius:6px;background:rgba(94,234,212,.12);color:var(--green);font-weight:700;font-size:.8rem}
+    .endpoint a{color:var(--text);text-decoration:none;word-break:break-all}
+    .endpoint a:hover{text-decoration:underline}
+    .tabs{display:flex;gap:6px;margin-bottom:8px}
+    .tab,.copy{font:inherit;font-size:.85rem;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}
+    .tab[aria-selected="true"]{background:var(--surface-2);color:var(--text);border-color:rgba(110,168,255,.5)}
+    .copy:hover,.tab:hover{color:var(--text)}
+    .codewrap{position:relative}
+    .codewrap .copy{position:absolute;top:8px;right:8px}
+    pre{margin:0 0 4px;padding:16px;padding-right:90px;background:#07101f;border:1px solid var(--border);border-radius:10px;overflow:auto;font-size:.88rem;line-height:1.5}
+    .caption{margin:18px 0 8px;color:var(--muted);font-size:.92rem}
+    .caption + .codewrap pre{padding-right:16px}
+
+    @media (max-width:560px){.codewrap .copy{position:static;display:block;margin:6px 0 0 auto}pre{padding-right:16px}}
+
+    .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+    .card ul.plain{margin:10px 0 0;padding-left:20px;color:var(--muted)}
+    .card ul.plain li{margin:6px 0}
+    .card p{color:var(--muted);margin:10px 0 0}
+    details{border-top:1px solid var(--border);padding:12px 0}
+    details:first-of-type{margin-top:12px}
+    summary{cursor:pointer;font-weight:600}
+    details p{margin:8px 0 0}
+
+    footer{padding:12px 0 48px;color:var(--muted);font-size:.88rem;text-align:center}
   </style>
   <!-- Analytics -->
   <script src="assets/js/analytics.js" defer></script>
 </head>
 <body>
+  <div class="flag" aria-hidden="true"></div>
   <main class="wrap">
-    <header>
-      <div>
-        <h1>Feriados Chile — API</h1>
-        <p class="lead">Consulta feriados oficiales para Chile años 2026 a 2033.</p>
+    <header class="hero">
+      <p class="eyebrow">API pública · gratis · sin API key</p>
+      <h1>Feriados de Chile en JSON</h1>
+      <p class="lead">Consulta los feriados de cualquier año entre 2026 y 2033: fecha, día de la semana, tipo e irrenunciables, con los traslados que fija la ley ya aplicados.</p>
+      <div class="actions">
+        <a class="btn" href="#explorador">Ver feriados</a>
+        <a class="btn ghost" href="#uso">Cómo usar la API</a>
+        <a class="btn ghost" href="https://github.com/devschile/feriados-cl">GitHub</a>
       </div>
-      <div class="meta">Hosted on Netlify</div>
     </header>
 
-    <div class="card" id="app">
-      <div style="margin-bottom:24px;color:var(--muted)">
-        API endpoints: <a href="/api/holidays/2026">/api/holidays/2026</a> • <a href="/holidays/2026">/holidays/2026</a>
+    <section class="card" id="explorador" aria-labelledby="explorador-t">
+      <div class="toolbar">
+        <h2 id="explorador-t">Feriados de Chile <span id="year-title">2026</span></h2>
+        <div class="picker">
+          <label for="year">Año</label>
+          <select id="year">
+            <option>2026</option><option>2027</option><option>2028</option><option>2029</option>
+            <option>2030</option><option>2031</option><option>2032</option><option>2033</option>
+          </select>
+        </div>
       </div>
-      <div class="controls">
-        <label for="year">Año</label>
-        <input id="year" type="number" min="2026" max="2033" value="2026" />
-        <button id="fetch">Consultar</button>
-        <div style="margin-left:auto;color:var(--muted)">Formato: <code>/holidays/:year</code></div>
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <div id="out" class="months" aria-live="polite" aria-busy="true">
+        <noscript><p class="status">Activa JavaScript para ver el listado, o consulta <a href="/holidays/2026">/holidays/2026</a> directamente.</p></noscript>
       </div>
-
-      <div class="out" id="out"></div>
-    </div>
-
-    <section class="card doc" aria-labelledby="uso">
-      <h2 id="uso">Cómo usar la API de feriados de Chile</h2>
-      <p>Haz una petición <code>GET</code> a <code>/holidays/:year</code> con un año entre 2026 y 2033. No necesitas API key y el CORS está abierto.</p>
-      <pre><code>curl https://feriados.devschile.cl/holidays/2026</code></pre>
-      <p>La respuesta agrupa los feriados por mes e indica el día de la semana, si es <code>civil</code> o <code>religioso</code> y si es <code>irrenunciable</code>.</p>
-      <h2>Qué incluye</h2>
-      <ul>
-        <li>Feriados nacionales fijos y los móviles por Pascua (Viernes y Sábado Santo).</li>
-        <li>Traslados que fija la ley: San Pedro y San Pablo, Encuentro de Dos Mundos e Iglesias Evangélicas y Protestantes.</li>
-        <li>Feriados adicionales de Fiestas Patrias cuando corresponden.</li>
-        <li>Día Nacional de los Pueblos Indígenas, según el solsticio de invierno.</li>
-      </ul>
-      <p>No incluye feriados regionales ni los que se decreten por ley especial. Código y reglas en <a href="https://github.com/devschile/feriados-cl">GitHub</a>.</p>
     </section>
 
+    <section class="card" id="uso" aria-labelledby="uso-t">
+      <h2 id="uso-t">Úsala en tu proyecto</h2>
+      <p class="section-lead">Una sola petición <code>GET</code> por año. Responde JSON con los feriados agrupados por mes y trae CORS abierto, así que sirve también desde el navegador. Los ejemplos cambian según el año elegido arriba.</p>
+
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <a id="endpoint" href="/holidays/2026">https://feriados.devschile.cl/holidays/2026</a>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Lenguaje del ejemplo">
+        <button class="tab" role="tab" id="tab-curl" aria-selected="true" aria-controls="code-curl">curl</button>
+        <button class="tab" role="tab" id="tab-js" aria-selected="false" aria-controls="code-js">JavaScript</button>
+        <button class="tab" role="tab" id="tab-py" aria-selected="false" aria-controls="code-py">Python</button>
+      </div>
+      <div class="codewrap">
+        <pre role="tabpanel" id="code-curl" aria-labelledby="tab-curl"><code>curl https://feriados.devschile.cl/holidays/2026</code></pre>
+        <pre role="tabpanel" id="code-js" aria-labelledby="tab-js" hidden><code></code></pre>
+        <pre role="tabpanel" id="code-py" aria-labelledby="tab-py" hidden><code></code></pre>
+        <button class="copy" id="copy-code" type="button">Copiar</button>
+      </div>
+
+      <p class="caption" id="sample-caption">Fragmento de la respuesta (primer feriado del año):</p>
+      <div class="codewrap">
+        <pre><code id="sample">Cargando…</code></pre>
+      </div>
+    </section>
+
+    <div class="two">
+      <section class="card" aria-labelledby="incluye-t">
+        <h2 id="incluye-t">Qué incluye</h2>
+        <ul class="plain">
+          <li>Feriados nacionales fijos y los móviles por Pascua (Viernes y Sábado Santo).</li>
+          <li>Traslados por ley: San Pedro y San Pablo, Encuentro de Dos Mundos e Iglesias Evangélicas y Protestantes.</li>
+          <li>Feriados adicionales de Fiestas Patrias cuando corresponden.</li>
+          <li>Día Nacional de los Pueblos Indígenas, según el solsticio de invierno.</li>
+        </ul>
+        <p>No incluye feriados regionales ni los que se decreten por ley especial.</p>
+      </section>
+
+      <section class="card" aria-labelledby="campos-t">
+        <h2 id="campos-t">Campos de cada feriado</h2>
+        <ul class="plain">
+          <li><code>mes</code> y <code>dia</code>: la fecha (mes de 1 a 12).</li>
+          <li><code>dia_semana</code>: lunes, martes, etc.</li>
+          <li><code>descripcion</code>: nombre del feriado.</li>
+          <li><code>tipo</code>: <code>civil</code> o <code>religioso</code>.</li>
+          <li><code>irrenunciable</code>: <code>true</code> si el comercio no puede exigir trabajar ese día.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="faq-t">
+      <h2 id="faq-t">Preguntas frecuentes</h2>
+      <details>
+        <summary>¿Qué años cubre la API de feriados de Chile?</summary>
+        <p>Del 2026 al 2033. Cualquier otro año responde con error 400.</p>
+      </details>
+      <details>
+        <summary>¿Cuáles son los feriados irrenunciables en Chile?</summary>
+        <p>1 de enero, 1 de mayo, 18 de septiembre, 19 de septiembre y 25 de diciembre (Ley 19.973).</p>
+      </details>
+      <details>
+        <summary>¿Necesito una API key?</summary>
+        <p>No. La API es gratuita, no requiere autenticación y tiene CORS abierto.</p>
+      </details>
+      <details>
+        <summary>¿Cómo se calculan los feriados trasladados?</summary>
+        <p>Con las reglas de las leyes 19.668, 20.299 y 20.215. El detalle y el código están en <a href="https://github.com/devschile/feriados-cl#readme">GitHub</a>.</p>
+      </details>
+    </section>
   </main>
 
-  <footer class="wrap" style="margin-top:0">
-      <div style="text-align:center">&copy; 2026 <a href="https://github.com/devschile">devsChile</a>. Licencia: <a href="/LICENSE">MIT</a></div>
+  <footer class="wrap">
+    &copy; 2026 <a href="https://github.com/devschile">devsChile</a> · Licencia <a href="/LICENSE">MIT</a> · <a href="https://github.com/devschile/feriados-cl">Código fuente</a>
   </footer>
 
   <script>
-    const out = document.getElementById('out');
-    const yearInput = document.getElementById('year');
-    const btn = document.getElementById('fetch');
-    const MIN_YEAR = 2026, MAX_YEAR = 2033;
+    (function () {
+      var MIN_YEAR = 2026, MAX_YEAR = 2033;
+      var ORIGIN = 'https://feriados.devschile.cl';
+      var $ = function (id) { return document.getElementById(id); };
+      var out = $('out'), yearSel = $('year'), summary = $('summary');
+      var cache = {}, reqId = 0, currentYear;
 
-    function showError(msg){ const d = document.createElement('div'); d.style.color = '#ffccd5'; d.textContent = 'Error: ' + msg; out.replaceChildren(d); }
-
-    function render(data){
-      if(!data || !data.feriados) return showError('Respuesta inválida');
-      let html = `<div class="meta">Año: ${data.year}</div>`;
-      for(const m of Object.keys(data.feriados)){
-        html += `<div class="month"><h3>${m}</h3><ul>`;
-        for(const f of data.feriados[m]){
-          html += `<li><strong>${f.dia}</strong> — ${f.descripcion} <span class="meta">(${f.dia_semana}) ${f.tipo}${f.irrenunciable?', irrenunciable':''}</span></li>`;
-        }
-        html += `</ul></div>`;
+      function el(tag, cls, text) {
+        var n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (text !== undefined) n.textContent = text;
+        return n;
       }
-      out.innerHTML = html;
-    }
+      var cap = function (t) { return t.charAt(0).toUpperCase() + t.slice(1); };
 
-    async function fetchYear(y){
-      out.innerHTML = '<div class="meta">Cargando…</div>';
-      // try clean route first
-      const cleanUrl = `/holidays/${y}`;
-      try{
-        const r = await fetch(cleanUrl);
-        const j = await r.json();
-        if(r.ok) return render(j);
-        // if the response is an error object, show it
-        if(j && j.error) return showError(j.error);
-      }catch(e){ /* fallthrough */ }
+      // Fecha de hoy en Chile (evita que la zona horaria del visitante cambie el año por defecto).
+      function todayCL() {
+        var p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' })
+          .format(new Date()).split('-').map(Number);
+        return { y: p[0], m: p[1], d: p[2] };
+      }
+      var today = todayCL();
+      var defaultYear = Math.min(MAX_YEAR, Math.max(MIN_YEAR, today.y));
 
-      // fallback to function direct
-      try{
-        const r2 = await fetch(`/.netlify/functions/holidays?year=${y}`);
-        const j2 = await r2.json();
-        if(r2.ok) return render(j2);
-        if(j2 && j2.error) return showError(j2.error);
-      }catch(e){ showError('No se pudo conectar al servidor'); }
-    }
+      /* ---------- Ejemplos de código según el año ---------- */
+      function updateExamples(year) {
+        var url = ORIGIN + '/holidays/' + year;
+        var ep = $('endpoint');
+        ep.href = '/holidays/' + year;
+        ep.textContent = url;
+        $('code-curl').firstChild.textContent = 'curl ' + url;
+        $('code-js').firstChild.textContent =
+          "const res = await fetch('" + url + "');\n" +
+          "const { year, feriados } = await res.json();\n\n" +
+          "console.log(feriados.enero); // feriados de enero de " + year;
+        $('code-py').firstChild.textContent =
+          "import requests\n\n" +
+          "data = requests.get('" + url + "', timeout=10).json()\n" +
+          "print(data['year'], list(data['feriados']))";
+      }
 
-    btn.addEventListener('click', ()=>{
-      const y = parseInt(yearInput.value,10);
-      if(!Number.isInteger(y) || y < MIN_YEAR || y > MAX_YEAR) return showError(`Solo se soportan los años ${MIN_YEAR} a ${MAX_YEAR}`);
-      if(window.dcCapture) window.dcCapture('holidays_queried', { year: y });
-      fetchYear(y);
-    });
+      function updateSample(data) {
+        var first = Object.keys(data.feriados)[0];
+        var sample = { year: data.year, feriados: {} };
+        sample.feriados[first] = [data.feriados[first][0]];
+        $('sample').textContent = JSON.stringify(sample, null, 2);
+        $('sample-caption').textContent = 'Fragmento de la respuesta de ' + data.year + ' (solo el primer feriado; la respuesta completa incluye todos los meses):';
+      }
 
-    // auto load default
-    fetchYear(parseInt(yearInput.value,10));
+      /* ---------- Listado ---------- */
+      function render(data) {
+        var all = [];
+        Object.keys(data.feriados).forEach(function (m) { data.feriados[m].forEach(function (f) { all.push(f); }); });
+
+        var irr = all.filter(function (f) { return f.irrenunciable; }).length;
+        var we = all.filter(function (f) { return f.dia_semana === 'sábado' || f.dia_semana === 'domingo'; }).length;
+        summary.replaceChildren();
+        var s1 = el('strong', '', all.length + ' feriados');
+        summary.append(s1, ' en ' + data.year + ' · ' + irr + ' irrenunciables · ' + we + ' caen en fin de semana');
+
+        var isCurrent = data.year === today.y;
+        var nextKey = null;
+        if (isCurrent) {
+          for (var i = 0; i < all.length; i++) {
+            if (all[i].mes > today.m || (all[i].mes === today.m && all[i].dia >= today.d)) { nextKey = all[i].mes + '-' + all[i].dia; break; }
+          }
+        }
+
+        var frag = document.createDocumentFragment();
+        Object.keys(data.feriados).forEach(function (m) {
+          var box = el('section', 'month');
+          box.appendChild(el('h3', '', cap(m)));
+          var ul = el('ul');
+          data.feriados[m].forEach(function (f) {
+            var key = f.mes + '-' + f.dia;
+            var isWe = f.dia_semana === 'sábado' || f.dia_semana === 'domingo';
+            var past = isCurrent && (f.mes < today.m || (f.mes === today.m && f.dia < today.d));
+            var li = el('li', 'holiday' + (isWe ? ' weekend' : '') + (past ? ' past' : ''));
+
+            var day = el('div', 'day');
+            day.append(el('strong', '', String(f.dia)), el('span', '', f.dia_semana.slice(0, 3)));
+
+            var info = el('div');
+            info.appendChild(el('div', 'name', f.descripcion));
+            var tags = el('div', 'tags');
+            if (key === nextKey) tags.appendChild(el('span', 'tag next', 'Próximo'));
+            tags.appendChild(el('span', 'tag', f.tipo));
+            if (f.irrenunciable) tags.appendChild(el('span', 'tag irr', 'Irrenunciable'));
+            if (isWe) tags.appendChild(el('span', 'tag we', 'Fin de semana'));
+            info.appendChild(tags);
+
+            li.append(day, info);
+            ul.appendChild(li);
+          });
+          box.appendChild(ul);
+          frag.appendChild(box);
+        });
+        out.replaceChildren(frag);
+        out.setAttribute('aria-busy', 'false');
+      }
+
+      function showLoading() {
+        out.setAttribute('aria-busy', 'true');
+        var f = document.createDocumentFragment();
+        for (var i = 0; i < 6; i++) f.appendChild(el('div', 'skeleton'));
+        out.replaceChildren(f);
+      }
+
+      function showError(msg, year) {
+        out.setAttribute('aria-busy', 'false');
+        summary.textContent = '';
+        var box = el('div', 'status error', msg + ' ');
+        var retry = el('button', 'tab', 'Reintentar');
+        retry.type = 'button';
+        retry.addEventListener('click', function () { load(year); });
+        box.appendChild(retry);
+        out.replaceChildren(box);
+      }
+
+      function getJson(url) {
+        return fetch(url, { headers: { Accept: 'application/json' } }).then(function (r) {
+          return r.json().then(function (j) { return { ok: r.ok, json: j }; });
+        });
+      }
+
+      function fetchYear(y) {
+        if (cache[y]) return Promise.resolve(cache[y]);
+        return getJson('/holidays/' + y)
+          .catch(function () { return getJson('/.netlify/functions/holidays?year=' + y); })
+          .then(function (res) {
+            if (res.ok && res.json && res.json.feriados) { cache[y] = res.json; return res.json; }
+            throw new Error((res.json && res.json.error) || 'Respuesta inválida');
+          });
+      }
+
+      function load(y) {
+        var id = ++reqId;
+        currentYear = y;
+        $('year-title').textContent = y;
+        updateExamples(y);
+        showLoading();
+        fetchYear(y).then(function (data) {
+          if (id !== reqId) return; // llegó una respuesta vieja
+          render(data);
+          updateSample(data);
+        }).catch(function () {
+          if (id !== reqId) return;
+          showError('No se pudieron cargar los feriados de ' + y + '.', y);
+          $('sample').textContent = '—';
+        });
+      }
+
+      yearSel.addEventListener('change', function () {
+        var y = parseInt(yearSel.value, 10);
+        if (!Number.isInteger(y) || y < MIN_YEAR || y > MAX_YEAR) return;
+        if (window.dcCapture) window.dcCapture('holidays_queried', { year: y });
+        load(y);
+      });
+
+      /* ---------- Pestañas y copiar ---------- */
+      var tabs = ['curl', 'js', 'py'];
+      function selectTab(name) {
+        tabs.forEach(function (t) {
+          var on = t === name;
+          $('tab-' + t).setAttribute('aria-selected', on ? 'true' : 'false');
+          $('code-' + t).hidden = !on;
+        });
+        activeTab = name;
+      }
+      var activeTab = 'curl';
+      tabs.forEach(function (t) {
+        $('tab-' + t).addEventListener('click', function () {
+          selectTab(t);
+          if (window.dcCapture) window.dcCapture('example_tab', { tab: t });
+        });
+      });
+
+      $('copy-code').addEventListener('click', function () {
+        var btn = this;
+        var text = $('code-' + activeTab).textContent;
+        var done = function (ok) {
+          btn.textContent = ok ? 'Copiado' : 'No se pudo copiar';
+          setTimeout(function () { btn.textContent = 'Copiar'; }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        } else { done(false); }
+        if (window.dcCapture) window.dcCapture('example_copied', { tab: activeTab, year: currentYear });
+      });
+
+      // Año por defecto: el actual (hora de Chile) si está soportado; si no, el más cercano del rango.
+      yearSel.value = String(defaultYear);
+      load(defaultYear);
+    })();
   </script>
 </body>
 </html>
