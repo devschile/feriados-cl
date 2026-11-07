@@ -3,25 +3,67 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Feriados Chile — API</title>
-  <meta name="description" content="API REST con feriados oficiales de Chile para 2026 y 2027. Consulta feriados por año y obtén datos estructurados por mes." />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://feriados-cl.netlify.app/" />
-  <meta property="og:title" content="Feriados Chile — API" />
-  <meta property="og:description" content="Consulta los feriados oficiales de Chile (2026, 2027). API REST desplegada en Netlify Functions." />
+  <title>API de Feriados de Chile 2026–2033 en JSON | devsChile</title>
+  <meta name="description" content="API REST gratuita con los feriados de Chile de 2026 a 2033 en JSON: irrenunciables, civiles y religiosos, con traslados por ley. Sin autenticación." />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large" />
+  <meta name="theme-color" content="#0f1724" />
+  <link rel="canonical" href="https://feriados.devschile.cl/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E" />
+  <meta property="og:site_name" content="Feriados Chile — API" />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:title" content="API de Feriados de Chile 2026–2033 en JSON" />
+  <meta property="og:description" content="Feriados de Chile de 2026 a 2033 en JSON: irrenunciables, civiles y religiosos, con los traslados que fija la ley. Gratis y sin autenticación." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://feriados-cl.netlify.app/" />
+  <meta property="og:url" content="https://feriados.devschile.cl/" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Feriados Chile — API" />
-  <meta name="twitter:description" content="Consulta los feriados oficiales de Chile (2026, 2027). API REST desplegada en Netlify Functions." />
-  <link rel="alternate" hreflang="es" href="https://feriados-cl.netlify.app/" />
+  <meta name="twitter:title" content="API de Feriados de Chile 2026–2033 en JSON" />
+  <meta name="twitter:description" content="Feriados de Chile de 2026 a 2033 en JSON: irrenunciables, civiles y religiosos, con los traslados que fija la ley." />
+  <link rel="alternate" hreflang="es-CL" href="https://feriados.devschile.cl/" />
+  <link rel="alternate" hreflang="x-default" href="https://feriados.devschile.cl/" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Feriados Chile — API",
-    "url": "https://feriados-cl.netlify.app/",
-    "description": "API REST con feriados oficiales de Chile para 2026 y 2027. Consulta feriados por año y obtén datos estructurados por mes."
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://feriados.devschile.cl/#website",
+        "name": "Feriados Chile — API",
+        "url": "https://feriados.devschile.cl/",
+        "inLanguage": "es-CL",
+        "publisher": { "@type": "Organization", "name": "devsChile", "url": "https://devschile.cl" }
+      },
+      {
+        "@type": "WebAPI",
+        "@id": "https://feriados.devschile.cl/#api",
+        "name": "API de Feriados de Chile",
+        "description": "API REST que devuelve los feriados de Chile por año (2026 a 2033), agrupados por mes.",
+        "url": "https://feriados.devschile.cl/",
+        "documentation": "https://github.com/devschile/feriados-cl#readme",
+        "inLanguage": "es-CL",
+        "isAccessibleForFree": true,
+        "provider": { "@type": "Organization", "name": "devsChile", "url": "https://devschile.cl" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Qué años cubre la API de feriados de Chile?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Del 2026 al 2033. Cualquier otro año responde con error 400." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuáles son los feriados irrenunciables en Chile?",
+            "acceptedAnswer": { "@type": "Answer", "text": "1 de enero, 1 de mayo, 18 de septiembre, 19 de septiembre y 25 de diciembre (Ley 19.973)." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Necesito una API key?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. La API es gratuita, no requiere autenticación y tiene CORS abierto." }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <style>
@@ -45,16 +87,20 @@
     footer{margin-top:40px;color:var(--muted);font-size:.85rem}
     a{color:var(--accent)}
     pre{background:#021021;padding:12px;border-radius:8px;overflow:auto}
+    .doc{margin-top:24px}
+    .doc h2{font-size:1.1rem;margin:0 0 8px}
+    .doc p,.doc li{color:var(--muted);line-height:1.55}
+    .doc code{color:var(--text)}
   </style>
   <!-- Analytics -->
   <script src="assets/js/analytics.js" defer></script>
 </head>
 <body>
-  <div class="wrap">
+  <main class="wrap">
     <header>
       <div>
         <h1>Feriados Chile — API</h1>
-        <p class="lead">Consulta feriados oficiales para Chile años 2026, 2027.</p>
+        <p class="lead">Consulta feriados oficiales para Chile años 2026 a 2033.</p>
       </div>
       <div class="meta">Hosted on Netlify</div>
     </header>
@@ -65,7 +111,7 @@
       </div>
       <div class="controls">
         <label for="year">Año</label>
-        <input id="year" type="number" min="2026" max="2027" value="2026" />
+        <input id="year" type="number" min="2026" max="2033" value="2026" />
         <button id="fetch">Consultar</button>
         <div style="margin-left:auto;color:var(--muted)">Formato: <code>/holidays/:year</code></div>
       </div>
@@ -73,18 +119,34 @@
       <div class="out" id="out"></div>
     </div>
 
-    <footer>
-      <div style="text-align:center">&copy; 2025 <a href="https://github.com/devschile">devsChile</a>. Licencia: <a href="/LICENSE">MIT</a></div>
-    </footer>
-  </div>
+    <section class="card doc" aria-labelledby="uso">
+      <h2 id="uso">Cómo usar la API de feriados de Chile</h2>
+      <p>Haz una petición <code>GET</code> a <code>/holidays/:year</code> con un año entre 2026 y 2033. No necesitas API key y el CORS está abierto.</p>
+      <pre><code>curl https://feriados.devschile.cl/holidays/2026</code></pre>
+      <p>La respuesta agrupa los feriados por mes e indica el día de la semana, si es <code>civil</code> o <code>religioso</code> y si es <code>irrenunciable</code>.</p>
+      <h2>Qué incluye</h2>
+      <ul>
+        <li>Feriados nacionales fijos y los móviles por Pascua (Viernes y Sábado Santo).</li>
+        <li>Traslados que fija la ley: San Pedro y San Pablo, Encuentro de Dos Mundos e Iglesias Evangélicas y Protestantes.</li>
+        <li>Feriados adicionales de Fiestas Patrias cuando corresponden.</li>
+        <li>Día Nacional de los Pueblos Indígenas, según el solsticio de invierno.</li>
+      </ul>
+      <p>No incluye feriados regionales ni los que se decreten por ley especial. Código y reglas en <a href="https://github.com/devschile/feriados-cl">GitHub</a>.</p>
+    </section>
+
+  </main>
+
+  <footer class="wrap" style="margin-top:0">
+      <div style="text-align:center">&copy; 2026 <a href="https://github.com/devschile">devsChile</a>. Licencia: <a href="/LICENSE">MIT</a></div>
+  </footer>
 
   <script>
     const out = document.getElementById('out');
     const yearInput = document.getElementById('year');
     const btn = document.getElementById('fetch');
-    const allowed = [2026,2027];
+    const MIN_YEAR = 2026, MAX_YEAR = 2033;
 
-    function showError(msg){ out.innerHTML = `<div style="color:#ffccd5">Error: ${msg}</div>` }
+    function showError(msg){ const d = document.createElement('div'); d.style.color = '#ffccd5'; d.textContent = 'Error: ' + msg; out.replaceChildren(d); }
 
     function render(data){
       if(!data || !data.feriados) return showError('Respuesta inválida');
@@ -122,7 +184,7 @@
 
     btn.addEventListener('click', ()=>{
       const y = parseInt(yearInput.value,10);
-      if(!allowed.includes(y)) return showError('Solo se soportan 2026 y 2027');
+      if(!Number.isInteger(y) || y < MIN_YEAR || y > MAX_YEAR) return showError(`Solo se soportan los años ${MIN_YEAR} a ${MAX_YEAR}`);
       if(window.dcCapture) window.dcCapture('holidays_queried', { year: y });
       fetchYear(y);
     });
