@@ -91,6 +91,7 @@ El sitio corre en el Coolify de devsChile (`coolify.devschile.cl`) como aplicaci
 - Repositorio `devschile/feriados-cl`, rama `main`, puerto `3000`.
 - Cada push a `main` despliega automáticamente.
 - El healthcheck del contenedor usa `/healthz`.
+- No requiere variables de entorno ni secretos. Solo `PORT` (opcional, por defecto `3000`).
 - El dominio `feriados.devschile.cl` está en Cloudflare y apunta al servidor de Coolify.
 - El servidor solo sirve una lista blanca de archivos (landing, `robots.txt`, `sitemap.xml`, `assets/js/` y `data/`). El resto del repositorio no es accesible por HTTP.
 
