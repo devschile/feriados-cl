@@ -1,6 +1,6 @@
-# Feriados API (Netlify Functions)
+# Feriados API
 
-API REST que devuelve los feriados de Chile para un año dado. Se despliega como Netlify Function.
+API REST que devuelve los feriados de Chile para un año dado. Es un servidor Node sin dependencias que sirve la landing y la API, desplegado con Docker en el Coolify de devsChile.
 
 **Sitio y API:** https://feriados.devschile.cl — **Años soportados: 2026 a 2033.** Cualquier otro año responde `400`.
 
@@ -8,9 +8,9 @@ API REST que devuelve los feriados de Chile para un año dado. Se despliega como
 
 - `https://feriados.devschile.cl/holidays/2026` — ruta limpia (reescrita internamente a la función).
 - `https://feriados.devschile.cl/api/holidays/2026` — alternativa común para APIs.
-- `https://feriados.devschile.cl/.netlify/functions/holidays?year=2026` — endpoint directo de la función.
+- `https://feriados.devschile.cl/.netlify/functions/holidays?year=2026` — ruta heredada de Netlify, se mantiene por compatibilidad.
 
-Solo se aceptan los métodos `GET`, `HEAD` y `OPTIONS`. CORS abierto (`*`).
+Solo se aceptan los métodos `GET`, `HEAD` y `OPTIONS`. CORS abierto (`*`). `GET /healthz` responde `ok` para el healthcheck.
 
 ## Formato de respuesta
 
@@ -44,7 +44,7 @@ Campos por feriado:
 
 ## Cómo se calculan los feriados
 
-La lógica vive en `lib/chile-holidays.js` y se comparte entre la función, el generador de JSON y las pruebas.
+La lógica vive en `lib/chile-holidays.js` y se comparte entre la función (`functions/holidays.js`), el generador de JSON y las pruebas.
 
 | Feriado | Regla |
 | --- | --- |
@@ -61,14 +61,13 @@ Los feriados regionales y los que se decreten por ley especial (por ejemplo, jor
 ## Desarrollo
 
 ```bash
-npm install
 npm test               # pruebas (node:test)
 npm run generate       # regenera data/<año>.json desde lib/chile-holidays.js
-npx netlify dev        # servidor local en http://localhost:8888
+npm start              # servidor local en http://localhost:3000 (variable PORT para cambiarlo)
 ```
 
 ```bash
-curl "http://localhost:8888/holidays/2028"
+curl "http://localhost:3000/holidays/2028"
 ```
 
 `data/*.json` son copias estáticas de la respuesta de cada año. Las pruebas fallan si quedan desactualizadas respecto del cálculo.
@@ -85,9 +84,17 @@ La landing (`index.html`) usa `https://feriados.devschile.cl/` como canonical, `
 
 Al agregar años, actualiza también el rango en el `title`, la `description`, el JSON-LD y el texto de la landing.
 
-## Dominio
+## Despliegue
 
-El sitio se publica en Netlify con el dominio `feriados.devschile.cl`. Para usar otro dominio, asígnalo en Site settings → Domain management.
+El sitio corre en el Coolify de devsChile (`coolify.devschile.cl`) como aplicación con build pack **Dockerfile**:
+
+- Repositorio `devschile/feriados-cl`, rama `main`, puerto `3000`.
+- Cada push a `main` despliega automáticamente.
+- El healthcheck del contenedor usa `/healthz`.
+- El dominio `feriados.devschile.cl` está en Cloudflare y apunta al servidor de Coolify.
+- El servidor solo sirve una lista blanca de archivos (landing, `robots.txt`, `sitemap.xml`, `assets/js/` y `data/`). El resto del repositorio no es accesible por HTTP.
+
+`netlify.toml` se conserva solo como respaldo mientras exista el sitio anterior en Netlify. No lo usa Coolify.
 
 ## Licencia
 

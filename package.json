@@ -1,11 +1,10 @@
 {
   "name": "feriados-api",
-  "version": "0.2.0",
-  "description": "API REST (Netlify Functions) que retorna feriados de Chile por año (2026–2033)",
-  "main": "functions/holidays.js",
+  "version": "0.3.0",
+  "description": "API REST que retorna feriados de Chile por año (2026–2033)",
+  "main": "server.js",
   "scripts": {
-    "start": "netlify dev",
-    "build": "echo \"No build step\"",
+    "start": "node server.js",
     "generate": "node scripts/generate_json.js",
     "test": "node --test tests/"
   },
@@ -13,8 +12,5 @@
     "node": ">=18"
   },
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "netlify-cli": "^12.0.0"
-  }
+  "license": "MIT"
 }

@@ -1,0 +1,9 @@
+.git
+.github
+.netlify
+node_modules
+tests
+scripts
+package-lock.json
+netlify.toml
+*.md
