@@ -58,8 +58,8 @@
       },
       {
         "mes": 6,
-        "dia": 29,
-        "dia_semana": "martes",
+        "dia": 28,
+        "dia_semana": "lunes",
         "descripcion": "San Pedro y San Pablo",
         "tipo": "religioso",
         "irrenunciable": false
@@ -86,14 +86,6 @@
       }
     ],
     "septiembre": [
-      {
-        "mes": 9,
-        "dia": 17,
-        "dia_semana": "viernes",
-        "descripcion": "Feriado Adicional Fiestas Patrias",
-        "tipo": "civil",
-        "irrenunciable": false
-      },
       {
         "mes": 9,
         "dia": 18,

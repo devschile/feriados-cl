@@ -88,14 +88,6 @@
     "septiembre": [
       {
         "mes": 9,
-        "dia": 17,
-        "dia_semana": "jueves",
-        "descripcion": "Feriado Adicional Fiestas Patrias",
-        "tipo": "civil",
-        "irrenunciable": false
-      },
-      {
-        "mes": 9,
         "dia": 18,
         "dia_semana": "viernes",
         "descripcion": "Independencia Nacional",
@@ -114,8 +106,8 @@
     "octubre": [
       {
         "mes": 10,
-        "dia": 11,
-        "dia_semana": "domingo",
+        "dia": 12,
+        "dia_semana": "lunes",
         "descripcion": "Encuentro de Dos Mundos",
         "tipo": "civil",
         "irrenunciable": false
